@@ -3,7 +3,7 @@
  * @Author: web.wangxingren
  * @Date: 2023-05-04 22:57:04
  * @LastEditors: web.wangxingren
- * @LastEditTime: 2023-11-04 23:30:56
+ * @LastEditTime: 2023-11-07 22:34:14
  * @FilePath: /blog-web/components/Layout/AppHeader.vue
 -->
 <template>
@@ -33,7 +33,6 @@ const handlerScrollNav = () => {
   scrollTop.value = curScrollTop;
   const scroll = curScrollTop - currentHeight.value;
   currentHeight.value = curScrollTop;
-  console.log(currentHeight.value , 11111111)
   if (currentHeight.value < 60) {
     headerClass.value = 'fixed-top';
   } else if (scroll < 0) {
@@ -44,6 +43,7 @@ const handlerScrollNav = () => {
 };
 
 onMounted(() => {
+  handlerScrollNav();
   // 滚动监听
   window.addEventListener('scroll', handlerScrollNav);
 });
@@ -60,7 +60,7 @@ onMounted(() => {
   height: 60px;
   z-index: 999;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-  background-color: rgba(255, 255, 255, 0.9);
+  // background-color: rgba(255, 255, 255, 0.9);
   color: @colorTextTitle;
   padding: 0 14px;
   transition: all .8s;

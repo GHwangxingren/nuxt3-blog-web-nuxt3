@@ -3,7 +3,7 @@
  * @Author: web.wangxingren
  * @Date: 2023-05-07 22:05:01
  * @LastEditors: web.wangxingren
- * @LastEditTime: 2023-11-04 23:36:46
+ * @LastEditTime: 2023-11-07 22:35:27
  * @FilePath: /blog-web/components/Layout/AppMenu/HeaderMenu.vue
 -->
 <template>
@@ -43,7 +43,6 @@
 const props = withDefaults(defineProps<{ currentHeight: number }>(), {
   currentHeight: 0
 });
-console.log(props.currentHeight, 111111)
 interface InavList {
   name: string
   icon: string

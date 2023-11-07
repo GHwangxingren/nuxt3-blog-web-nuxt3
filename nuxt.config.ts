@@ -3,12 +3,13 @@
  * @Author: web.wangxingren
  * @Date: 2023-04-14 13:33:47
  * @LastEditors: web.wangxingren
- * @LastEditTime: 2023-08-10 22:14:19
+ * @LastEditTime: 2023-11-07 22:39:21
  * @FilePath: /blog-web/nuxt.config.ts
  */
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 export default defineNuxtConfig({
+  // ssr: process.env.NODE_ENV !== "development",
   modules: [
     '@nuxtjs/tailwindcss',
     // '@pinia/nuxt',
