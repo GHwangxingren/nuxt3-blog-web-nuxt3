@@ -3,11 +3,11 @@
  * @Author: web.wangxingren
  * @Date: 2023-05-09 22:09:26
  * @LastEditors: web.wangxingren
- * @LastEditTime: 2023-11-04 23:39:44
+ * @LastEditTime: 2023-11-08 22:38:37
  * @FilePath: /blog-web/components/HomeMain/HomeMain.vue
 -->
 <template>
-  <div class="home-main flex-1 mdMax:w-full">
+  <div v-loading="loading" class="home-main flex-1 mdMax:w-full">
     <div class="posts">
       <div v-for="(item, index) in articleList.rows" :key="item.id" class="posts-item flex items-center mdMax:flex-col mdMax:h-auto">
         <div :class="{ 'order-1': index % 2 }" class="posts-cover cursor-pointer h-full mdMax:w-full mdMax:h-230 mdMax:order-none">
@@ -42,29 +42,54 @@
         </div>
       </div>
     </div>
-    <Pagination class="mt-20" layout="prev, pager, next" />
+    <Pagination
+      class="mt-20"
+      :size="pageSize"
+      :current="currentPage"
+      :total="articleList.count"
+      :pager-count="7"
+      layout="prev, pager, next"
+      @pagination="changeCurrentPage"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import type { ArticleModel } from '@/api/article/typing';
+import type { Page } from '@/components/Pagination/index.vue';
 import { dayjs } from 'element-plus';
 
-// lazy默认false,阻塞路由导航,接口请求完成之后路由跳转,lazy:true 不阻塞路由导航
-const { data } = await useApi.article.getArticleList({
-  pageSize: 10,
-  page: 1,
-  keyword: '',
-  status: 1
-}, { lazy: false });
+const pageSize = ref<number>(8);
+const currentPage = ref<number>(1);
+const loading = ref<boolean>(false);
 let articleList: ArticleModel = reactive({
-  count: data.value?.data?.count,
-  rows: data.value?.data?.rows
+  count: 0,
+  rows: []
 }) as ArticleModel;
+// lazy默认false,阻塞路由导航,接口请求完成之后路由跳转,lazy:true 不阻塞路由导航
+const getArticleList = async () => {
+  loading.value = true;
+  const { data } = await useApi.article.getArticleList({
+    pageSize: pageSize.value,
+    page: currentPage.value,
+    keyword: '',
+    status: 1
+  }, { lazy: false });
+  loading.value = false;
+  articleList.count = data.value?.data?.count || 0;
+  articleList.rows = data.value?.data?.rows || [];
+  if (currentPage.value === 1) {
+    const useArticleStore = useArticle();
+    // 存储top5zui xi文章
+    useArticleStore.setArticleTopList(articleList?.rows?.length > 5 ? articleList.rows.slice(0, 5) : articleList.rows);
+  }
+}
+getArticleList();
 
-const useArticleStore = useArticle();
-// 存储top5zui xi文章
-useArticleStore.setArticleTopList(articleList?.rows?.length > 5 ? articleList.rows.slice(0, 5) : articleList.rows);
+const changeCurrentPage = (page: Page) => {
+  currentPage.value = page.current;
+  getArticleList();
+}
 </script>
 
 

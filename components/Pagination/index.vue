@@ -3,7 +3,7 @@
  * @Author: web.wangxingren
  * @Date: 2023-05-21 21:22:40
  * @LastEditors: web.wangxingren
- * @LastEditTime: 2023-05-21 22:24:43
+ * @LastEditTime: 2023-11-08 22:35:08
  * @FilePath: /blog-web/components/Pagination/index.vue
 -->
 <template>
@@ -39,12 +39,12 @@
  export interface Props {
   total: number
   pagerCount: number
-  layout: string
-  pageSizes: Array<number>
+  layout?: string
+  pageSizes?: Array<number>
   current: number
   size: number
 }
-type Page = Pick<Props, 'current' | 'size'>;
+export type Page = Pick<Props, 'current' | 'size'>;
 const props = withDefaults(defineProps<Props>(), {
   total: 0,
   pagerCount: 5,
@@ -61,7 +61,7 @@ let page = reactive({
 });
 
 const emit = defineEmits<{
-  (e: 'pagination', page: Page): void
+  (e: 'pagination', page: Page): void,
 }>();
 
 //选择每页显示数量 Change page size
