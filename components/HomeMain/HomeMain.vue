@@ -2,12 +2,12 @@
  * @Description: 
  * @Author: web.wangxingren
  * @Date: 2023-05-09 22:09:26
- * @LastEditors: web.wangxingren
- * @LastEditTime: 2023-11-08 22:38:37
+ * @LastEditors: wangxingren GHwangxingren@163.com
+ * @LastEditTime: 2023-11-14 18:57:05
  * @FilePath: /blog-web/components/HomeMain/HomeMain.vue
 -->
 <template>
-  <div v-loading="loading" class="home-main flex-1 mdMax:w-full">
+  <div class="home-main flex-1 mdMax:w-full">
     <div class="posts">
       <div v-for="(item, index) in articleList.rows" :key="item.id" class="posts-item flex items-center mdMax:flex-col mdMax:h-auto">
         <div :class="{ 'order-1': index % 2 }" class="posts-cover cursor-pointer h-full mdMax:w-full mdMax:h-230 mdMax:order-none">
@@ -58,24 +58,24 @@
 import type { ArticleModel } from '@/api/article/typing';
 import type { Page } from '@/components/Pagination/index.vue';
 import { dayjs } from 'element-plus';
+import load from '@/utils/loading';
 
 const pageSize = ref<number>(8);
 const currentPage = ref<number>(1);
-const loading = ref<boolean>(false);
 let articleList: ArticleModel = reactive({
   count: 0,
   rows: []
 }) as ArticleModel;
 // lazy默认false,阻塞路由导航,接口请求完成之后路由跳转,lazy:true 不阻塞路由导航
 const getArticleList = async () => {
-  loading.value = true;
+  load.show();
   const { data } = await useApi.article.getArticleList({
     pageSize: pageSize.value,
     page: currentPage.value,
     keyword: '',
     status: 1
   }, { lazy: false });
-  loading.value = false;
+  load.hide();
   articleList.count = data.value?.data?.count || 0;
   articleList.rows = data.value?.data?.rows || [];
   if (currentPage.value === 1) {

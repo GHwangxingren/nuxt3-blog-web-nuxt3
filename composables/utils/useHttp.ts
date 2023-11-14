@@ -2,12 +2,12 @@
  * @Description: 封装fetch
  * @Author: web.wangxingren
  * @Date: 2023-04-20 23:02:05
- * @LastEditors: web.wangxingren
- * @LastEditTime: 2023-05-03 23:15:18
+ * @LastEditors: wangxingren GHwangxingren@163.com
+ * @LastEditTime: 2023-11-14 18:23:45
  * @FilePath: /blog-web/composables/useHttp.ts
  */
-import { UseFetchOptions } from "#app";
-import { Ref } from "vue";
+import type { UseFetchOptions } from "#app";
+import type { Ref } from "vue";
 import type { SearchParameters, FetchResponse } from "ofetch";
 import { cloneDeep } from "lodash";
 
